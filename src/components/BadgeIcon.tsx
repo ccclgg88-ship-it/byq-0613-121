@@ -15,14 +15,21 @@ export function BadgeIcon({ iconName, color, size, offsetX, offsetY, canvasSize 
 
   const cx = canvasSize / 2 + offsetX
   const cy = canvasSize / 2 + offsetY
+  const scale = size / 24
 
   return (
-    <g transform={`translate(${cx - size / 2}, ${cy - size / 2})`}>
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-        {icon.paths.map((path, index) => (
-          <path key={index} d={path} />
-        ))}
-      </svg>
+    <g transform={`translate(${cx}, ${cy}) scale(${scale}) translate(-12, -12)`}>
+      {icon.paths.map((path, index) => (
+        <path
+          key={index}
+          d={path}
+          fill="none"
+          stroke={color}
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ))}
     </g>
   )
 }

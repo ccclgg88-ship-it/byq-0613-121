@@ -9,7 +9,7 @@ export function BadgeCodename({ codename, color, fontSize, canvasSize }: BadgeCo
   if (!codename) return null
 
   const x = canvasSize / 2
-  const y = canvasSize / 2 + canvasSize * 0.28
+  const y = canvasSize / 2 + canvasSize * 0.22
 
   return (
     <text

@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
-import { BadgeShape, getShapeClipPath } from '@/components/BadgeShape'
+import { BadgeShape, ShapeClipPathElements } from '@/components/BadgeShape'
 import { BadgeIcon } from '@/components/BadgeIcon'
 import { BadgeCodename } from '@/components/BadgeCodename'
 import { TextureOverlay } from '@/components/TextureOverlay'
@@ -29,7 +29,6 @@ export const BadgeCanvas = forwardRef<SVGSVGElement>(function BadgeCanvas(_, ref
   })
 
   const theme = THEMES[state.theme]
-  const clipPath = getShapeClipPath(state.shape, CANVAS_SIZE)
 
   const clampIconPosition = useCallback(
     (offsetX: number, offsetY: number, size: number) => {
@@ -167,10 +166,12 @@ export const BadgeCanvas = forwardRef<SVGSVGElement>(function BadgeCanvas(_, ref
           className="drop-shadow-2xl transition-transform duration-300"
         >
           <defs>
-            <clipPath id="badge-clip">{/* Used by TextureOverlay parent if needed */}</clipPath>
+            <clipPath id="badge-shape-clip">
+              <ShapeClipPathElements shape={state.shape} size={CANVAS_SIZE} />
+            </clipPath>
           </defs>
 
-          <g style={{ clipPath }}>
+          <g clipPath="url(#badge-shape-clip)">
             <BadgeShape
               shape={state.shape}
               size={CANVAS_SIZE}
@@ -188,30 +189,28 @@ export const BadgeCanvas = forwardRef<SVGSVGElement>(function BadgeCanvas(_, ref
             />
           </g>
 
-          <g style={{ clipPath }}>
-            {state.icon && (
-              <g
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-                style={{ cursor: drag.isDragging ? 'grabbing' : 'grab' }}
-              >
-                <BadgeIcon
-                  iconName={state.icon}
-                  color={state.iconColor}
-                  size={state.iconSize}
-                  offsetX={state.iconOffsetX}
-                  offsetY={state.iconOffsetY}
-                  canvasSize={CANVAS_SIZE}
-                />
-              </g>
-            )}
-            <BadgeCodename
-              codename={state.codename}
-              color={state.codenameColor}
-              fontSize={state.codenameFontSize}
-              canvasSize={CANVAS_SIZE}
-            />
-          </g>
+          {state.icon && (
+            <g
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+              style={{ cursor: drag.isDragging ? 'grabbing' : 'grab' }}
+            >
+              <BadgeIcon
+                iconName={state.icon}
+                color={state.iconColor}
+                size={state.iconSize}
+                offsetX={state.iconOffsetX}
+                offsetY={state.iconOffsetY}
+                canvasSize={CANVAS_SIZE}
+              />
+            </g>
+          )}
+          <BadgeCodename
+            codename={state.codename}
+            color={state.codenameColor}
+            fontSize={state.codenameFontSize}
+            canvasSize={CANVAS_SIZE}
+          />
         </svg>
       </div>
     </div>
