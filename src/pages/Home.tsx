@@ -3,7 +3,11 @@ import { BadgeCanvas } from '@/components/BadgeCanvas'
 import { ControlPanel } from '@/components/ControlPanel'
 import { useBadgeStore } from '@/store/badgeStore'
 
-export default function Home() {
+interface HomeProps {
+  onOpenWorks?: () => void
+}
+
+export default function Home({ onOpenWorks }: HomeProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const undo = useBadgeStore((s) => s.undo)
   const redo = useBadgeStore((s) => s.redo)
@@ -44,7 +48,7 @@ export default function Home() {
         </div>
 
         <div className="w-96 border-l border-white/5">
-          <ControlPanel svgRef={svgRef} />
+          <ControlPanel svgRef={svgRef} onOpenWorks={onOpenWorks} />
         </div>
       </div>
     </div>

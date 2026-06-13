@@ -1,13 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "@/pages/Home";
+import { useState, useEffect } from 'react'
+import Home from '@/pages/Home'
+import WorksPage from '@/pages/WorksPage'
+import { useWorksStore } from '@/store/worksStore'
+
+type PageType = 'designer' | 'works'
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState<PageType>('designer')
+  const initWorks = useWorksStore((s) => s.init)
+
+  useEffect(() => {
+    initWorks()
+  }, [initWorks])
+
+  const handleOpenWorks = () => {
+    setCurrentPage('works')
+  }
+
+  const handleBackToDesigner = () => {
+    setCurrentPage('designer')
+  }
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/other" element={<div className="text-center text-xl">Other Page - Coming Soon</div>} />
-      </Routes>
-    </Router>
-  );
+    <div className="min-h-screen bg-[#0f0f1a]">
+      {currentPage === 'designer' && <Home onOpenWorks={handleOpenWorks} />}
+      {currentPage === 'works' && <WorksPage onBack={handleBackToDesigner} />}
+    </div>
+  )
 }

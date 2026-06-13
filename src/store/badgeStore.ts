@@ -17,6 +17,7 @@ interface BadgeStore extends HistoryState {
   canRedo: boolean
   applyTheme: (themeName: ThemeName) => void
   reset: () => void
+  loadState: (state: BadgeState) => void
 }
 
 export const useBadgeStore = create<BadgeStore>((set, get) => ({
@@ -104,6 +105,18 @@ export const useBadgeStore = create<BadgeStore>((set, get) => ({
       canRedo: false,
     })
   },
+
+  loadState: (state) => {
+    const { past, present } = get()
+    const newPast = [...past, present].slice(-MAX_HISTORY)
+    set({
+      past: newPast,
+      present: { ...state },
+      future: [],
+      canUndo: newPast.length > 0,
+      canRedo: false,
+    })
+  },
 }))
 
-export type { ShapeType, TextureType, StrokeStyle, ThemeName }
+export type { BadgeState, ShapeType, TextureType, StrokeStyle, ThemeName }
