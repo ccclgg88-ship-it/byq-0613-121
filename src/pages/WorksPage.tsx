@@ -148,6 +148,7 @@ export default function WorksPage({ onBack }: WorksPageProps) {
           work={selectedWork}
           onClose={handleCloseDetail}
           onSaved={handleSaved}
+          onLoad={onBack}
         />
       )}
     </div>

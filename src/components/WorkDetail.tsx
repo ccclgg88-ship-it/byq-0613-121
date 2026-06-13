@@ -15,11 +15,12 @@ interface WorkDetailProps {
   work: Work
   onClose: () => void
   onSaved?: () => void
+  onLoad?: () => void
 }
 
 type ConfirmType = 'load' | 'delete' | null
 
-export function WorkDetail({ work, onClose, onSaved }: WorkDetailProps) {
+export function WorkDetail({ work, onClose, onSaved, onLoad }: WorkDetailProps) {
   const [confirmType, setConfirmType] = useState<ConfirmType>(null)
   const [copyName, setCopyName] = useState(`${work.name}-副本`)
   const [isCopying, setIsCopying] = useState(false)
@@ -55,6 +56,7 @@ export function WorkDetail({ work, onClose, onSaved }: WorkDetailProps) {
   const doLoad = () => {
     loadState(work.badge)
     onClose()
+    onLoad?.()
   }
 
   const handleExport = async () => {
